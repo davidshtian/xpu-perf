@@ -72,9 +72,9 @@ Flash attention uses the **NKI (Neuron Kernel Interface)** `flash_fwd` kernel fr
 
 Tested on **inf2.8xlarge** with Neuron SDK 2.x, torch-neuronx 2.9.0, neuronx-cc 2.22.
 
-### Verified passing (30 ops)
+### Verified passing (33 ops)
 
-All basic compute ops, GEMM with 3 dtypes, index ops, and transfers:
+All basic compute ops, GEMM with 3 dtypes, index ops, transfers, and LLM ops:
 
 | Op | Dtype | Shape | Latency | Metric |
 |---|---|---|---|---|
@@ -107,18 +107,21 @@ All basic compute ops, GEMM with 3 dtypes, index ops, and transfers:
 | device2device | bf16 | 1024x1024 | - | - |
 | host2device | bf16 | 1024x1024 | - | - |
 | device2host | bf16 | 1024x1024 | - | - |
+| add_rms_norm | bf16 | 128x4096 | 80 us | 52.7 GB/s |
+| head_rms_norm | bf16 | 128x32x128 | 117 us | 17.9 GB/s |
+| moe_softmax_topk | fp32 | 128x8 k=2 | - | - |
 
-### Not yet tested — pending XLA compilation (23 ops)
+### Not yet tested — pending XLA compilation (20 ops)
 
 These ops all **load successfully** (51/51 ops confirmed) but have not been benchmarked
 because each new tensor shape requires **5-15 minutes of neuronx-cc compilation** on
-inf2. With ~23 untested ops, compilation takes 2-3 hours total. Once compiled, results
+inf2. With ~20 untested ops, compilation takes 2-3 hours total. Once compiled, results
 are cached in `/var/tmp/neuron-compile-cache/` and subsequent runs are fast.
 
 | Category | Ops | How to test |
 |---|---|---|
 | Vector Linear (1) | cast | `--task cast --device 0` |
-| LLM ops (16) | add_rms_norm, add_rms_norm_dynamic_quant, scale_dynamic_quant, swiglu_dynamic_quant, moe_gating_gemm, moe_softmax_topk, moe_scatter_dynamic_quant, quant_matmul, moe_quant_group_gemm, moe_gather, head_rms_norm, head_rms_norm_dynamic_quant, rotary_embedding, store_kv_cache, dequant_kv_cache, flash_attention | Use workloads under `workloads/llm/test_ops/` |
+| LLM ops (13) | add_rms_norm_dynamic_quant, scale_dynamic_quant, swiglu_dynamic_quant, moe_gating_gemm, moe_scatter_dynamic_quant, quant_matmul, moe_quant_group_gemm, moe_gather, head_rms_norm_dynamic_quant, rotary_embedding, store_kv_cache, dequant_kv_cache, flash_attention | Use workloads under `workloads/llm/test_ops/` |
 | XCCL (6) | all_reduce, reduce_scatter, all_gather, all_to_all, broadcast, p2p | `--task all_reduce --device 0,1` (needs 2+ NeuronCores) |
 
 ### How to resume testing
