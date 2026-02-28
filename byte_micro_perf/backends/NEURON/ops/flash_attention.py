@@ -108,15 +108,15 @@ try:
                 device=q.device,
             )
 
-            flash_fwd[self.batch_size, self.q_head_num](
+            o_nki = flash_fwd[self.batch_size, self.q_head_num](
                 q_nki,
                 k_nki,
                 v_nki,
+                seed=None,
                 use_causal_mask=self.is_causal,
                 mixed_precision=True,
                 softmax_scale=self.softmax_scale,
                 config=self._flash_config,
-                o=o_nki,
             )
 
             return o_nki

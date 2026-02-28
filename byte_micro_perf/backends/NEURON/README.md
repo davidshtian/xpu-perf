@@ -61,6 +61,7 @@ Flash attention uses the **NKI (Neuron Kernel Interface)** `flash_fwd` kernel fr
 - Provider: `nki`
 - Mode: prefill only (batch_size=1, contiguous Q/K/V, causal mask)
 - Dtype: bfloat16
+- Head config: MHA only (q_head_num must equal kv_head_num); GQA not supported by NKI kernel
 - Decode mode with paged KV cache is not supported by the NKI kernel
 
 ### Unsupported dtypes
@@ -72,7 +73,7 @@ Flash attention uses the **NKI (Neuron Kernel Interface)** `flash_fwd` kernel fr
 
 Tested on **inf2.8xlarge** with Neuron SDK 2.x, torch-neuronx 2.9.0, neuronx-cc 2.22.
 
-### Verified passing (38 ops)
+### Verified passing (39 ops)
 
 All basic compute ops, GEMM with 3 dtypes, index ops, transfers, and LLM ops:
 
@@ -115,18 +116,18 @@ All basic compute ops, GEMM with 3 dtypes, index ops, transfers, and LLM ops:
 | rotary_embedding | bf16 | 128x48x128 prefill | 799 us | 3.4 GB/s |
 | store_kv_cache | bf16 | 128x8x128 prefill | 629 us | 1.7 GB/s |
 | moe_gather | bf16 | 128x4096 8e top2 | 662 us | 11.1 GB/s |
+| flash_attention | bf16 | 2048 seq, 8h MHA prefill (nki) | 994 us | 8.6 TFLOPS |
 
-### Not yet tested — pending XLA compilation (15 ops)
+### Not yet tested (14 ops)
 
 These ops all **load successfully** (51/51 ops confirmed) but have not been benchmarked
 because each new tensor shape requires **5-15 minutes of neuronx-cc compilation** on
-inf2. With ~15 untested ops, compilation takes 1-2 hours total. Once compiled, results
+inf2. Remaining ops are blocked by Neuron limitations (int8/fp8 or distributed backend). Once compiled, results
 are cached in `/var/tmp/neuron-compile-cache/` and subsequent runs are fast.
 
 | Category | Ops | How to test |
 |---|---|---|
-| LLM quant ops (7) | scale_dynamic_quant, add_rms_norm_dynamic_quant, head_rms_norm_dynamic_quant, swiglu_dynamic_quant, moe_scatter_dynamic_quant, quant_matmul, moe_quant_group_gemm | Require int8/fp8 dtype |
-| LLM other (2) | dequant_kv_cache, flash_attention | int8 input / NKI kernel |
+| LLM quant ops (8) | scale_dynamic_quant, add_rms_norm_dynamic_quant, head_rms_norm_dynamic_quant, swiglu_dynamic_quant, moe_scatter_dynamic_quant, quant_matmul, moe_quant_group_gemm, dequant_kv_cache | Require int8/fp8 dtype (see known issue #6) |
 | XCCL (6) | all_reduce, reduce_scatter, all_gather, all_to_all, broadcast, p2p | `--task all_reduce --device 0,1` (needs 2+ NeuronCores) |
 
 ### How to resume testing
