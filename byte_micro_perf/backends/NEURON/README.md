@@ -73,7 +73,7 @@ Flash attention uses the **NKI (Neuron Kernel Interface)** `flash_fwd` kernel fr
 
 Tested on **inf2.8xlarge** with Neuron SDK 2.x, torch-neuronx 2.9.0, neuronx-cc 2.22.
 
-### Verified passing (42 ops)
+### Verified passing (43 ops)
 
 All basic compute ops, GEMM with 3 dtypes, index ops, transfers, and LLM ops:
 
@@ -120,15 +120,15 @@ All basic compute ops, GEMM with 3 dtypes, index ops, transfers, and LLM ops:
 | all_reduce | bf16 | 1024x1024 2-core | 41 us | 51.3 GB/s |
 | reduce_scatter | bf16 | 1024x1024 2-core | - | - |
 | broadcast | bf16 | 1024x1024 2-core | - | - |
+| all_gather | bf16 | 1024x1024 2-core | 17 us | 124.7 GB/s |
 
-### Blocked ops (11 ops)
+### Blocked ops (10 ops)
 
 These ops load successfully but cannot be benchmarked due to Neuron platform limitations.
 
 | Category | Ops | Blocker |
 |---|---|---|
 | LLM quant ops (8) | scale_dynamic_quant, add_rms_norm_dynamic_quant, head_rms_norm_dynamic_quant, swiglu_dynamic_quant, moe_scatter_dynamic_quant, quant_matmul, moe_quant_group_gemm, dequant_kv_cache | Require int8/fp8 dtype, unsupported on Neuron XLA (see #7) |
-| XCCL (1) | all_gather | `all_gather_into_tensor` shape incompatible with XLA backend |
 | XCCL (1) | all_to_all | Requires Mesh algorithm, needs multi-NeuronDevice instance (see #6) |
 | XCCL (1) | p2p | Requires multi-NeuronDevice instance for send/recv |
 
