@@ -1,0 +1,1124 @@
+============================================================
+NEURON Benchmark Run: Mon Mar  9 08:39:42 UTC 2026
+Device: 0  Timeout: 300s
+============================================================
+
+Found 35 workload files
+
+------------------------------------------------------------
+[1/35] workloads/basic/tensor_gemm_ops/neuron/gemm.json
+Start: 08:39:42
+2026-03-09 08:39:43.489 launch.py:106 [INFO]: Using backend NEURON
+2026-03-09 08:39:43.592 backend.py:239 [WARNING]: load op all_reduce_h2d failed, error: No module named 'backends.NEURON.ops.all_reduce_h2d'
+2026-03-09 08:39:43.625 backend.py:239 [WARNING]: load op sort failed, error: No module named 'backends.NEURON.ops.sort'
+2026-03-09 08:39:43.657 backend.py:239 [WARNING]: load op quant_group_gemm_reduce_sum failed, error: No module named 'backends.NEURON.ops.quant_group_gemm_reduce_sum'
+2026-03-09 08:39:43.660 backend.py:239 [WARNING]: load op moe_quant_group_gemm_combine failed, error: No module named 'backends.NEURON.ops.moe_quant_group_gemm_combine'
+2026-03-09 08:39:46.428 launch.py:154 [INFO]: Backend NEURON instance created.
+2026-03-09 08:39:46.438 launch.py:156 [INFO]: common info: 
++-----------------+-------------+
+| attr            | value       |
++-----------------+-------------+
+| cpu_arch        | x86_64      |
+| python_version  | 3.12.3      |
+| numa_config_str | {0: '0-11'} |
++-----------------+-------------+
+2026-03-09 08:39:46.439 launch.py:157 [INFO]: backend info: 
++-----------------------+---------------------------+
+| attr                  | value                     |
++-----------------------+---------------------------+
+| device_name           | trn2.3xlarge              |
+| device_count          | 4                         |
+| device_memory_mb      | 24576.0                   |
+| neuron_device_count   | 1                         |
+| neuron_core_count     | 4                         |
+| torch_version         | 2.9.0+cu128               |
+| torch_xla_version     | 2.9.0                     |
+| neuronx_cc_version    | 2.23.6484.0+3b612583      |
+| torch_neuronx_version | 2.9.0.2.12.22436+0f1dac25 |
++-----------------------+---------------------------+
+2026-03-09 08:39:46.439 launch.py:158 [INFO]: provider info: 
++----------+---------+
+| provider | version |
++----------+---------+
++----------+---------+
+2026-03-09 08:39:46.439 launch.py:159 [INFO]: env info: 
++---------------------+-----------+-------------+-----------+
+| env                 | is_preset | default_val | final_val |
++---------------------+-----------+-------------+-----------+
+| NEURON_RT_LOG_LEVEL | False     | ERROR       | ERROR     |
++---------------------+-----------+-------------+-----------+
+2026-03-09 08:39:46.439 launch.py:170 [INFO]: use 1 numa nodes, numa_order: [0], mapping to [0, 1, 2, 3]
+2026-03-09 08:39:46.439 launch.py:177 [INFO]: node_world_size: 1, node_rank: 0, all_numa_num: 1
+2026-03-09 08:39:46.439 launch.py:193 [INFO]: using devices: [0]
+2026-03-09 08:39:46.439 launch.py:208 [INFO]: serving config: 
++-------------+-----------+------------------------------------------------------------------+
+| attr        | value     | note                                                             |
++-------------+-----------+------------------------------------------------------------------+
+| master_addr | localhost | ip address for serving and dist communication for gloo and xccl. |
+| server_port | 49371     | port for serving requests.                                       |
+| host_port   | 49372     | port for host communication.                                     |
+| device_port | 49373     | port for device communication.                                   |
++-------------+-----------+------------------------------------------------------------------+
+****************************************************************************************************
+2026-03-09 08:39:46.439 launch.py:244 [INFO]: test cases: 
+2026-03-09 08:39:46.439 launch.py:246 [INFO]: gemm has 18 test cases
+****************************************************************************************************
+2026-03-09 08:39:46.442 engine.py:164 [INFO]: spawn compute infer loop success, pids: [12090]
+2026-03-09 08:39:50.281 engine.py:177 [INFO]: all subprocesses are ready
+2026-03-09 08:39:50.281 perf_engine.py:152 [INFO]: dispatch 1 ops, 18 cases to ComputeEngine
+2026-Mar-09 08:39:53.0785 12090:12128 [0] int nccl_net_ofi_create_plugin(nccl_net_ofi_plugin_t**):219 CCOM WARN NET/OFI Failed to initialize rdma protocol
+2026-Mar-09 08:39:53.0788 12090:12128 [0] int nccl_net_ofi_create_plugin(nccl_net_ofi_plugin_t**):354 CCOM WARN NET/OFI aws-ofi-nccl initialization failed
+2026-Mar-09 08:39:53.0791 12090:12128 [0] ncclResult_t nccl_net_ofi_init_no_atexit_fini_v6(ncclDebugLogger_t):183 CCOM WARN NET/OFI Initializing plugin failed
+2026-Mar-09 08:39:53.0793 12090:12128 [0] net_plugin.cc:97 CCOM WARN OFI plugin initNet() failed is EFA enabled?
+2026-03-09 08:39:53.000817:  12090  [INFO]: Using a cached neff at /var/tmp/neuron-compile-cache/neuronxcc-2.23.6484.0+3b612583/MODULE_14150142475659239154+fad94d7c/model.neff
+2026-03-09 08:39:53.000860:  12090  [INFO]: Using a cached neff at /var/tmp/neuron-compile-cache/neuronxcc-2.23.6484.0+3b612583/MODULE_941493625470463280+fad94d7c/model.neff
+2026-03-09 08:39:53.000891:  12090  [INFO]: Using a cached neff at /var/tmp/neuron-compile-cache/neuronxcc-2.23.6484.0+3b612583/MODULE_10608776236682323640+fad94d7c/model.neff
+2026-03-09 08:39:54.000130:  12090  [INFO]: Using a cached neff at /var/tmp/neuron-compile-cache/neuronxcc-2.23.6484.0+3b612583/MODULE_3610033537793646299+fad94d7c/model.neff
++-------------+-------+
+| key         | value |
++-------------+-------+
+| op_name     | gemm  |
+| op_provider | torch |
+| rank        | 0     |
+| device_id   | 0     |
+| idx         | 0     |
++-------------+-------+
+{"arg_type": "default", "dtype": "float32", "M": 1024, "K": 4096, "N": 4096}
+{
+    "latency(us)": 7251.321,
+    "read_bytes(B)": 83886080,
+    "write_bytes(B)": 16777216,
+    "io_bytes(B)": 100663296,
+    "mem_bw(GB/s)": 13.882,
+    "calc_flops": 34359738368,
+    "calc_flops_power(tflops)": 4.738,
+    "calc_mem_ratio": 341.333,
+    "kernels": []
+}
+
+2026-03-09 08:39:54.000214:  12090  [INFO]: Using a cached neff at /var/tmp/neuron-compile-cache/neuronxcc-2.23.6484.0+3b612583/MODULE_3995885117648607410+fad94d7c/model.neff
+2026-03-09 08:39:54.000257:  12090  [INFO]: Using a cached neff at /var/tmp/neuron-compile-cache/neuronxcc-2.23.6484.0+3b612583/MODULE_8712424184722864518+fad94d7c/model.neff
+2026-03-09 08:39:54.000303:  12090  [INFO]: Using a cached neff at /var/tmp/neuron-compile-cache/neuronxcc-2.23.6484.0+3b612583/MODULE_13735176223234999802+fad94d7c/model.neff
+2026-03-09 08:39:54.000573:  12090  [INFO]: Using a cached neff at /var/tmp/neuron-compile-cache/neuronxcc-2.23.6484.0+3b612583/MODULE_2143038509122100480+fad94d7c/model.neff
++-------------+-------+
+| key         | value |
++-------------+-------+
+| op_name     | gemm  |
+| op_provider | torch |
+| rank        | 0     |
+| device_id   | 0     |
+| idx         | 1     |
++-------------+-------+
+{"arg_type": "default", "dtype": "float32", "M": 4096, "K": 4096, "N": 4096}
+{
+    "latency(us)": 9009.856,
+    "read_bytes(B)": 134217728,
+    "write_bytes(B)": 67108864,
+    "io_bytes(B)": 201326592,
+    "mem_bw(GB/s)": 22.345,
+    "calc_flops": 137438953472,
+    "calc_flops_power(tflops)": 15.254,
+    "calc_mem_ratio": 682.667,
+    "kernels": []
+}
+
+2026-03-09 08:39:54.000667:  12090  [INFO]: Using a cached neff at /var/tmp/neuron-compile-cache/neuronxcc-2.23.6484.0+3b612583/MODULE_14401211176187884928+fad94d7c/model.neff
+2026-03-09 08:39:54.000721:  12090  [INFO]: Using a cached neff at /var/tmp/neuron-compile-cache/neuronxcc-2.23.6484.0+3b612583/MODULE_17825008613876481164+fad94d7c/model.neff
+2026-03-09 08:39:54.000768:  12090  [INFO]: Using a cached neff at /var/tmp/neuron-compile-cache/neuronxcc-2.23.6484.0+3b612583/MODULE_1218367052449550447+fad94d7c/model.neff
+2026-03-09 08:39:55.000034:  12090  [INFO]: Using a cached neff at /var/tmp/neuron-compile-cache/neuronxcc-2.23.6484.0+3b612583/MODULE_17912065373429188198+fad94d7c/model.neff
++-------------+-------+
+| key         | value |
++-------------+-------+
+| op_name     | gemm  |
+| op_provider | torch |
+| rank        | 0     |
+| device_id   | 0     |
+| idx         | 2     |
++-------------+-------+
+{"arg_type": "default", "dtype": "float32", "M": 1024, "K": 8192, "N": 8192}
+{
+    "latency(us)": 6502.988,
+    "read_bytes(B)": 301989888,
+    "write_bytes(B)": 33554432,
+    "io_bytes(B)": 335544320,
+    "mem_bw(GB/s)": 51.598,
+    "calc_flops": 137438953472,
+    "calc_flops_power(tflops)": 21.135,
+    "calc_mem_ratio": 409.6,
+    "kernels": []
+}
+
+2026-03-09 08:39:55.000103:  12090  [INFO]: Using a cached neff at /var/tmp/neuron-compile-cache/neuronxcc-2.23.6484.0+3b612583/MODULE_17499282383734813371+fad94d7c/model.neff
+2026-03-09 08:39:55.000174:  12090  [INFO]: Using a cached neff at /var/tmp/neuron-compile-cache/neuronxcc-2.23.6484.0+3b612583/MODULE_16419796883173376672+fad94d7c/model.neff
+2026-03-09 08:39:55.000298:  12090  [INFO]: Using a cached neff at /var/tmp/neuron-compile-cache/neuronxcc-2.23.6484.0+3b612583/MODULE_4714355255058677801+fad94d7c/model.neff
++-------------+-------+
+| key         | value |
++-------------+-------+
+| op_name     | gemm  |
+| op_provider | torch |
+| rank        | 0     |
+| device_id   | 0     |
+| idx         | 3     |
++-------------+-------+
+{"arg_type": "default", "dtype": "float32", "M": 4096, "K": 8192, "N": 8192}
+{
+    "latency(us)": 3044.642,
+    "read_bytes(B)": 402653184,
+    "write_bytes(B)": 134217728,
+    "io_bytes(B)": 536870912,
+    "mem_bw(GB/s)": 176.333,
+    "calc_flops": 549755813888,
+    "calc_flops_power(tflops)": 180.565,
+    "calc_mem_ratio": 1024.0,
+    "kernels": []
+}
+
+2026-03-09 08:39:55.000723:  12090  [INFO]: Using a cached neff at /var/tmp/neuron-compile-cache/neuronxcc-2.23.6484.0+3b612583/MODULE_4244451553017134633+fad94d7c/model.neff
+2026-03-09 08:39:55.000757:  12090  [INFO]: Using a cached neff at /var/tmp/neuron-compile-cache/neuronxcc-2.23.6484.0+3b612583/MODULE_2821461765521546489+fad94d7c/model.neff
+2026-03-09 08:39:55.000778:  12090  [INFO]: Using a cached neff at /var/tmp/neuron-compile-cache/neuronxcc-2.23.6484.0+3b612583/MODULE_1937260105569234677+fad94d7c/model.neff
+2026-03-09 08:39:56.000007:  12090  [INFO]: Using a cached neff at /var/tmp/neuron-compile-cache/neuronxcc-2.23.6484.0+3b612583/MODULE_14114376338671484838+fad94d7c/model.neff
++-------------+-------+
+| key         | value |
++-------------+-------+
+| op_name     | gemm  |
+| op_provider | torch |
+| rank        | 0     |
+| device_id   | 0     |
+| idx         | 4     |
++-------------+-------+
+{"arg_type": "default", "dtype": "float32", "M": 1024, "K": 1024, "N": 8192}
+{
+    "latency(us)": 3823.186,
+    "read_bytes(B)": 37748736,
+    "write_bytes(B)": 33554432,
+    "io_bytes(B)": 71303168,
+    "mem_bw(GB/s)": 18.65,
+    "calc_flops": 17179869184,
+    "calc_flops_power(tflops)": 4.494,
+    "calc_mem_ratio": 240.941,
+    "kernels": []
+}
+
+2026-03-09 08:39:56.000049:  12090  [INFO]: Using a cached neff at /var/tmp/neuron-compile-cache/neuronxcc-2.23.6484.0+3b612583/MODULE_2761345824508694650+fad94d7c/model.neff
+2026-03-09 08:39:56.000091:  12090  [INFO]: Using a cached neff at /var/tmp/neuron-compile-cache/neuronxcc-2.23.6484.0+3b612583/MODULE_13064464990396883497+fad94d7c/model.neff
+2026-03-09 08:39:56.000125:  12090  [INFO]: Using a cached neff at /var/tmp/neuron-compile-cache/neuronxcc-2.23.6484.0+3b612583/MODULE_9101783950245710922+fad94d7c/model.neff
+2026-03-09 08:39:56.000369:  12090  [INFO]: Using a cached neff at /var/tmp/neuron-compile-cache/neuronxcc-2.23.6484.0+3b612583/MODULE_5108824735130834976+fad94d7c/model.neff
++-------------+-------+
+| key         | value |
++-------------+-------+
+| op_name     | gemm  |
+| op_provider | torch |
+| rank        | 0     |
+| device_id   | 0     |
+| idx         | 5     |
++-------------+-------+
+{"arg_type": "default", "dtype": "float32", "M": 4096, "K": 1024, "N": 8192}
+{
+    "latency(us)": 5438.107,
+    "read_bytes(B)": 50331648,
+    "write_bytes(B)": 134217728,
+    "io_bytes(B)": 184549376,
+    "mem_bw(GB/s)": 33.936,
+    "calc_flops": 68719476736,
+    "calc_flops_power(tflops)": 12.637,
+    "calc_mem_ratio": 372.364,
+    "kernels": []
+}
+
+2026-03-09 08:39:56.000427:  12090  [INFO]: Using a cached neff at /var/tmp/neuron-compile-cache/neuronxcc-2.23.6484.0+3b612583/MODULE_1664570300548200052+fad94d7c/model.neff
+2026-03-09 08:39:56.000464:  12090  [INFO]: Using a cached neff at /var/tmp/neuron-compile-cache/neuronxcc-2.23.6484.0+3b612583/MODULE_18239715386549392404+fad94d7c/model.neff
+2026-03-09 08:39:56.000486:  12090  [INFO]: Using a cached neff at /var/tmp/neuron-compile-cache/neuronxcc-2.23.6484.0+3b612583/MODULE_11925948101082872286+fad94d7c/model.neff
+2026-03-09 08:39:56.000715:  12090  [INFO]: Using a cached neff at /var/tmp/neuron-compile-cache/neuronxcc-2.23.6484.0+3b612583/MODULE_13105722539565164709+fad94d7c/model.neff
++-------------+-------+
+| key         | value |
++-------------+-------+
+| op_name     | gemm  |
+| op_provider | torch |
+| rank        | 0     |
+| device_id   | 0     |
+| idx         | 6     |
++-------------+-------+
+{"arg_type": "default", "dtype": "float16", "M": 1024, "K": 4096, "N": 4096}
+{
+    "latency(us)": 4042.246,
+    "read_bytes(B)": 41943040,
+    "write_bytes(B)": 8388608,
+    "io_bytes(B)": 50331648,
+    "mem_bw(GB/s)": 12.451,
+    "calc_flops": 34359738368,
+    "calc_flops_power(tflops)": 8.5,
+    "calc_mem_ratio": 682.667,
+    "kernels": []
+}
+
+2026-03-09 08:39:56.000760:  12090  [INFO]: Using a cached neff at /var/tmp/neuron-compile-cache/neuronxcc-2.23.6484.0+3b612583/MODULE_989892647581246045+fad94d7c/model.neff
+2026-03-09 08:39:56.000808:  12090  [INFO]: Using a cached neff at /var/tmp/neuron-compile-cache/neuronxcc-2.23.6484.0+3b612583/MODULE_2361544009906141514+fad94d7c/model.neff
+2026-03-09 08:39:56.000840:  12090  [INFO]: Using a cached neff at /var/tmp/neuron-compile-cache/neuronxcc-2.23.6484.0+3b612583/MODULE_6367058567092254662+fad94d7c/model.neff
+2026-03-09 08:39:57.000094:  12090  [INFO]: Using a cached neff at /var/tmp/neuron-compile-cache/neuronxcc-2.23.6484.0+3b612583/MODULE_2594118422299388538+fad94d7c/model.neff
++-------------+-------+
+| key         | value |
++-------------+-------+
+| op_name     | gemm  |
+| op_provider | torch |
+| rank        | 0     |
+| device_id   | 0     |
+| idx         | 7     |
++-------------+-------+
+{"arg_type": "default", "dtype": "float16", "M": 4096, "K": 4096, "N": 4096}
+{
+    "latency(us)": 9021.082,
+    "read_bytes(B)": 67108864,
+    "write_bytes(B)": 33554432,
+    "io_bytes(B)": 100663296,
+    "mem_bw(GB/s)": 11.159,
+    "calc_flops": 137438953472,
+    "calc_flops_power(tflops)": 15.235,
+    "calc_mem_ratio": 1365.333,
+    "kernels": []
+}
+
+2026-03-09 08:39:57.000178:  12090  [INFO]: Using a cached neff at /var/tmp/neuron-compile-cache/neuronxcc-2.23.6484.0+3b612583/MODULE_17377559235431698588+fad94d7c/model.neff
+2026-03-09 08:39:57.000234:  12090  [INFO]: Using a cached neff at /var/tmp/neuron-compile-cache/neuronxcc-2.23.6484.0+3b612583/MODULE_16128907119689626489+fad94d7c/model.neff
+2026-03-09 08:39:57.000264:  12090  [INFO]: Using a cached neff at /var/tmp/neuron-compile-cache/neuronxcc-2.23.6484.0+3b612583/MODULE_5536282323942152096+fad94d7c/model.neff
+2026-03-09 08:39:57.000508:  12090  [INFO]: Using a cached neff at /var/tmp/neuron-compile-cache/neuronxcc-2.23.6484.0+3b612583/MODULE_3275852817035865769+fad94d7c/model.neff
++-------------+-------+
+| key         | value |
++-------------+-------+
+| op_name     | gemm  |
+| op_provider | torch |
+| rank        | 0     |
+| device_id   | 0     |
+| idx         | 8     |
++-------------+-------+
+{"arg_type": "default", "dtype": "float16", "M": 1024, "K": 8192, "N": 8192}
+{
+    "latency(us)": 5980.884,
+    "read_bytes(B)": 150994944,
+    "write_bytes(B)": 16777216,
+    "io_bytes(B)": 167772160,
+    "mem_bw(GB/s)": 28.051,
+    "calc_flops": 137438953472,
+    "calc_flops_power(tflops)": 22.98,
+    "calc_mem_ratio": 819.2,
+    "kernels": []
+}
+
+2026-03-09 08:39:57.000572:  12090  [INFO]: Using a cached neff at /var/tmp/neuron-compile-cache/neuronxcc-2.23.6484.0+3b612583/MODULE_7648787727412876006+fad94d7c/model.neff
+2026-03-09 08:39:57.000643:  12090  [INFO]: Using a cached neff at /var/tmp/neuron-compile-cache/neuronxcc-2.23.6484.0+3b612583/MODULE_234010129643068867+fad94d7c/model.neff
+2026-03-09 08:39:57.000706:  12090  [INFO]: Using a cached neff at /var/tmp/neuron-compile-cache/neuronxcc-2.23.6484.0+3b612583/MODULE_13384332977507917379+fad94d7c/model.neff
+2026-03-09 08:39:57.000992:  12090  [ERROR]: Got a cached failed neff at /var/tmp/neuron-compile-cache/neuronxcc-2.23.6484.0+3b612583/MODULE_3225135056522247648+fad94d7c/model.neff. Will skip compilation, please set --retry_failed_compilation for recompilation: 
+ None.
+Traceback (most recent call last):
+  File "/home/ubuntu/xpu-perf/byte_micro_perf/backends/NEURON/backend_neuron.py", line 469, in perf
+    latency_us, kernel_mapping = self.core_perf(op_instance, 2, prefer_iters, tensor_list, profiling=profiling)
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/xpu-perf/byte_micro_perf/backends/NEURON/backend_neuron.py", line 508, in core_perf
+    xm.mark_step()
+  File "/opt/aws_neuronx_venv_pytorch_2_9/lib/python3.12/site-packages/typing_extensions.py", line 3004, in wrapper
+    return arg(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/opt/aws_neuronx_venv_pytorch_2_9/lib/python3.12/site-packages/torch_xla/core/xla_model.py", line 1032, in mark_step
+    torch_xla.sync(wait, reset_scope)
+  File "/opt/aws_neuronx_venv_pytorch_2_9/lib/python3.12/site-packages/torch_xla/torch_xla.py", line 87, in sync
+    torch_xla._XLAC._xla_step_marker(
+ValueError: RunNeuronCCImpl: error condition error != 0: <class 'subprocess.CalledProcessError'>: Command '' died with <Signals.SIGHUP: 1>.
++-------------+-------+
+| key         | value |
++-------------+-------+
+| op_name     | gemm  |
+| op_provider | torch |
+| rank        | 0     |
+| device_id   | 0     |
+| idx         | 9     |
++-------------+-------+
+{"arg_type": "default", "dtype": "float16", "M": 4096, "K": 8192, "N": 8192}
+{
+    "latency(us)": 41474.935,
+    "read_bytes(B)": 201326592,
+    "write_bytes(B)": 67108864,
+    "io_bytes(B)": 268435456,
+    "mem_bw(GB/s)": 6.472,
+    "calc_flops": 549755813888,
+    "calc_flops_power(tflops)": 13.255,
+    "calc_mem_ratio": 2048.0,
+    "kernels": {}
+}
+
+2026-03-09 08:39:58.000011:  12090  [INFO]: Using a cached neff at /var/tmp/neuron-compile-cache/neuronxcc-2.23.6484.0+3b612583/MODULE_10814985137043193464+fad94d7c/model.neff
+2026-03-09 08:39:58.000047:  12090  [INFO]: Using a cached neff at /var/tmp/neuron-compile-cache/neuronxcc-2.23.6484.0+3b612583/MODULE_9321924077577995158+fad94d7c/model.neff
+2026-03-09 08:39:58.000064:  12090  [INFO]: Using a cached neff at /var/tmp/neuron-compile-cache/neuronxcc-2.23.6484.0+3b612583/MODULE_17404298085602011522+fad94d7c/model.neff
+2026-03-09 08:39:58.000291:  12090  [INFO]: Using a cached neff at /var/tmp/neuron-compile-cache/neuronxcc-2.23.6484.0+3b612583/MODULE_4761186050624485754+fad94d7c/model.neff
++-------------+-------+
+| key         | value |
++-------------+-------+
+| op_name     | gemm  |
+| op_provider | torch |
+| rank        | 0     |
+| device_id   | 0     |
+| idx         | 10    |
++-------------+-------+
+{"arg_type": "default", "dtype": "float16", "M": 1024, "K": 1024, "N": 8192}
+{
+    "latency(us)": 3351.844,
+    "read_bytes(B)": 18874368,
+    "write_bytes(B)": 16777216,
+    "io_bytes(B)": 35651584,
+    "mem_bw(GB/s)": 10.636,
+    "calc_flops": 17179869184,
+    "calc_flops_power(tflops)": 5.125,
+    "calc_mem_ratio": 481.882,
+    "kernels": []
+}
+
+2026-03-09 08:39:58.000329:  12090  [INFO]: Using a cached neff at /var/tmp/neuron-compile-cache/neuronxcc-2.23.6484.0+3b612583/MODULE_3047618204276392667+fad94d7c/model.neff
+2026-03-09 08:39:58.000373:  12090  [INFO]: Using a cached neff at /var/tmp/neuron-compile-cache/neuronxcc-2.23.6484.0+3b612583/MODULE_17962855525609348443+fad94d7c/model.neff
+2026-03-09 08:39:58.000398:  12090  [INFO]: Using a cached neff at /var/tmp/neuron-compile-cache/neuronxcc-2.23.6484.0+3b612583/MODULE_8009017820100646367+fad94d7c/model.neff
+2026-03-09 08:39:58.000634:  12090  [INFO]: Using a cached neff at /var/tmp/neuron-compile-cache/neuronxcc-2.23.6484.0+3b612583/MODULE_7170857606684950615+fad94d7c/model.neff
++-------------+-------+
+| key         | value |
++-------------+-------+
+| op_name     | gemm  |
+| op_provider | torch |
+| rank        | 0     |
+| device_id   | 0     |
+| idx         | 11    |
++-------------+-------+
+{"arg_type": "default", "dtype": "float16", "M": 4096, "K": 1024, "N": 8192}
+{
+    "latency(us)": 5837.433,
+    "read_bytes(B)": 25165824,
+    "write_bytes(B)": 67108864,
+    "io_bytes(B)": 92274688,
+    "mem_bw(GB/s)": 15.807,
+    "calc_flops": 68719476736,
+    "calc_flops_power(tflops)": 11.772,
+    "calc_mem_ratio": 744.727,
+    "kernels": []
+}
+
+2026-03-09 08:39:58.000694:  12090  [INFO]: Using a cached neff at /var/tmp/neuron-compile-cache/neuronxcc-2.23.6484.0+3b612583/MODULE_11666149753463705991+fad94d7c/model.neff
+2026-03-09 08:39:58.000732:  12090  [INFO]: Using a cached neff at /var/tmp/neuron-compile-cache/neuronxcc-2.23.6484.0+3b612583/MODULE_7222438132743681238+fad94d7c/model.neff
+2026-03-09 08:39:58.000752:  12090  [INFO]: Using a cached neff at /var/tmp/neuron-compile-cache/neuronxcc-2.23.6484.0+3b612583/MODULE_5674002112209812497+fad94d7c/model.neff
+2026-03-09 08:39:58.000981:  12090  [INFO]: Using a cached neff at /var/tmp/neuron-compile-cache/neuronxcc-2.23.6484.0+3b612583/MODULE_17899212182714085335+fad94d7c/model.neff
++-------------+-------+
+| key         | value |
++-------------+-------+
+| op_name     | gemm  |
+| op_provider | torch |
+| rank        | 0     |
+| device_id   | 0     |
+| idx         | 12    |
++-------------+-------+
+{"arg_type": "default", "dtype": "bfloat16", "M": 1024, "K": 4096, "N": 4096}
+{
+    "latency(us)": 4035.897,
+    "read_bytes(B)": 41943040,
+    "write_bytes(B)": 8388608,
+    "io_bytes(B)": 50331648,
+    "mem_bw(GB/s)": 12.471,
+    "calc_flops": 34359738368,
+    "calc_flops_power(tflops)": 8.514,
+    "calc_mem_ratio": 682.667,
+    "kernels": []
+}
+
+2026-03-09 08:39:59.000026:  12090  [INFO]: Using a cached neff at /var/tmp/neuron-compile-cache/neuronxcc-2.23.6484.0+3b612583/MODULE_10384007136911878963+fad94d7c/model.neff
+2026-03-09 08:39:59.000072:  12090  [INFO]: Using a cached neff at /var/tmp/neuron-compile-cache/neuronxcc-2.23.6484.0+3b612583/MODULE_7727670477008164142+fad94d7c/model.neff
+2026-03-09 08:39:59.000103:  12090  [INFO]: Using a cached neff at /var/tmp/neuron-compile-cache/neuronxcc-2.23.6484.0+3b612583/MODULE_4320425383884717751+fad94d7c/model.neff
+2026-03-09 08:39:59.000347:  12090  [INFO]: Using a cached neff at /var/tmp/neuron-compile-cache/neuronxcc-2.23.6484.0+3b612583/MODULE_15009529512555273064+fad94d7c/model.neff
++-------------+-------+
+| key         | value |
++-------------+-------+
+| op_name     | gemm  |
+| op_provider | torch |
+| rank        | 0     |
+| device_id   | 0     |
+| idx         | 13    |
++-------------+-------+
+{"arg_type": "default", "dtype": "bfloat16", "M": 4096, "K": 4096, "N": 4096}
+{
+    "latency(us)": 7692.476,
+    "read_bytes(B)": 67108864,
+    "write_bytes(B)": 33554432,
+    "io_bytes(B)": 100663296,
+    "mem_bw(GB/s)": 13.086,
+    "calc_flops": 137438953472,
+    "calc_flops_power(tflops)": 17.867,
+    "calc_mem_ratio": 1365.333,
+    "kernels": []
+}
+
+2026-03-09 08:39:59.000428:  12090  [INFO]: Using a cached neff at /var/tmp/neuron-compile-cache/neuronxcc-2.23.6484.0+3b612583/MODULE_7894706711300373031+fad94d7c/model.neff
+2026-03-09 08:39:59.000483:  12090  [INFO]: Using a cached neff at /var/tmp/neuron-compile-cache/neuronxcc-2.23.6484.0+3b612583/MODULE_7084655353088744831+fad94d7c/model.neff
+2026-03-09 08:39:59.000514:  12090  [INFO]: Using a cached neff at /var/tmp/neuron-compile-cache/neuronxcc-2.23.6484.0+3b612583/MODULE_9292820554880658529+fad94d7c/model.neff
+2026-03-09 08:39:59.000760:  12090  [INFO]: Using a cached neff at /var/tmp/neuron-compile-cache/neuronxcc-2.23.6484.0+3b612583/MODULE_14658004673494974389+fad94d7c/model.neff
++-------------+-------+
+| key         | value |
++-------------+-------+
+| op_name     | gemm  |
+| op_provider | torch |
+| rank        | 0     |
+| device_id   | 0     |
+| idx         | 14    |
++-------------+-------+
+{"arg_type": "default", "dtype": "bfloat16", "M": 1024, "K": 8192, "N": 8192}
+{
+    "latency(us)": 6129.105,
+    "read_bytes(B)": 150994944,
+    "write_bytes(B)": 16777216,
+    "io_bytes(B)": 167772160,
+    "mem_bw(GB/s)": 27.373,
+    "calc_flops": 137438953472,
+    "calc_flops_power(tflops)": 22.424,
+    "calc_mem_ratio": 819.2,
+    "kernels": []
+}
+
+2026-03-09 08:39:59.000822:  12090  [INFO]: Using a cached neff at /var/tmp/neuron-compile-cache/neuronxcc-2.23.6484.0+3b612583/MODULE_12191799459077384108+fad94d7c/model.neff
+2026-03-09 08:39:59.000892:  12090  [INFO]: Using a cached neff at /var/tmp/neuron-compile-cache/neuronxcc-2.23.6484.0+3b612583/MODULE_1729219562354980803+fad94d7c/model.neff
+2026-03-09 08:39:59.000956:  12090  [INFO]: Using a cached neff at /var/tmp/neuron-compile-cache/neuronxcc-2.23.6484.0+3b612583/MODULE_742379514059975044+fad94d7c/model.neff
+2026-03-09 08:40:00.000241:  12090  [ERROR]: Got a cached failed neff at /var/tmp/neuron-compile-cache/neuronxcc-2.23.6484.0+3b612583/MODULE_16327374463927199828+fad94d7c/model.neff. Will skip compilation, please set --retry_failed_compilation for recompilation: 
+ None.
+Traceback (most recent call last):
+  File "/home/ubuntu/xpu-perf/byte_micro_perf/backends/NEURON/backend_neuron.py", line 469, in perf
+    latency_us, kernel_mapping = self.core_perf(op_instance, 2, prefer_iters, tensor_list, profiling=profiling)
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/xpu-perf/byte_micro_perf/backends/NEURON/backend_neuron.py", line 508, in core_perf
+    xm.mark_step()
+  File "/opt/aws_neuronx_venv_pytorch_2_9/lib/python3.12/site-packages/typing_extensions.py", line 3004, in wrapper
+    return arg(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/opt/aws_neuronx_venv_pytorch_2_9/lib/python3.12/site-packages/torch_xla/core/xla_model.py", line 1032, in mark_step
+    torch_xla.sync(wait, reset_scope)
+  File "/opt/aws_neuronx_venv_pytorch_2_9/lib/python3.12/site-packages/torch_xla/torch_xla.py", line 87, in sync
+    torch_xla._XLAC._xla_step_marker(
+ValueError: RunNeuronCCImpl: error condition error != 0: <class 'subprocess.CalledProcessError'>: Command '' died with <Signals.SIGHUP: 1>.
++-------------+-------+
+| key         | value |
++-------------+-------+
+| op_name     | gemm  |
+| op_provider | torch |
+| rank        | 0     |
+| device_id   | 0     |
+| idx         | 15    |
++-------------+-------+
+{"arg_type": "default", "dtype": "bfloat16", "M": 4096, "K": 8192, "N": 8192}
+{
+    "latency(us)": 41254.331,
+    "read_bytes(B)": 201326592,
+    "write_bytes(B)": 67108864,
+    "io_bytes(B)": 268435456,
+    "mem_bw(GB/s)": 6.507,
+    "calc_flops": 549755813888,
+    "calc_flops_power(tflops)": 13.326,
+    "calc_mem_ratio": 2048.0,
+    "kernels": {}
+}
+
+2026-03-09 08:40:00.000259:  12090  [INFO]: Using a cached neff at /var/tmp/neuron-compile-cache/neuronxcc-2.23.6484.0+3b612583/MODULE_17143759472807995521+fad94d7c/model.neff
+2026-03-09 08:40:00.000295:  12090  [INFO]: Using a cached neff at /var/tmp/neuron-compile-cache/neuronxcc-2.23.6484.0+3b612583/MODULE_6214267264971426409+fad94d7c/model.neff
+2026-03-09 08:40:00.000313:  12090  [INFO]: Using a cached neff at /var/tmp/neuron-compile-cache/neuronxcc-2.23.6484.0+3b612583/MODULE_2547999795405035547+fad94d7c/model.neff
+2026-03-09 08:40:00.000539:  12090  [INFO]: Using a cached neff at /var/tmp/neuron-compile-cache/neuronxcc-2.23.6484.0+3b612583/MODULE_6921235957557493609+fad94d7c/model.neff
++-------------+-------+
+| key         | value |
++-------------+-------+
+| op_name     | gemm  |
+| op_provider | torch |
+| rank        | 0     |
+| device_id   | 0     |
+| idx         | 16    |
++-------------+-------+
+{"arg_type": "default", "dtype": "bfloat16", "M": 1024, "K": 1024, "N": 8192}
+{
+    "latency(us)": 3282.444,
+    "read_bytes(B)": 18874368,
+    "write_bytes(B)": 16777216,
+    "io_bytes(B)": 35651584,
+    "mem_bw(GB/s)": 10.861,
+    "calc_flops": 17179869184,
+    "calc_flops_power(tflops)": 5.234,
+    "calc_mem_ratio": 481.882,
+    "kernels": []
+}
+
+2026-03-09 08:40:00.000580:  12090  [INFO]: Using a cached neff at /var/tmp/neuron-compile-cache/neuronxcc-2.23.6484.0+3b612583/MODULE_41302842935302610+fad94d7c/model.neff
+2026-03-09 08:40:00.000623:  12090  [INFO]: Using a cached neff at /var/tmp/neuron-compile-cache/neuronxcc-2.23.6484.0+3b612583/MODULE_17437959517924992301+fad94d7c/model.neff
+2026-03-09 08:40:00.000648:  12090  [INFO]: Using a cached neff at /var/tmp/neuron-compile-cache/neuronxcc-2.23.6484.0+3b612583/MODULE_6156015535124450035+fad94d7c/model.neff
+2026-03-09 08:40:00.000883:  12090  [INFO]: Using a cached neff at /var/tmp/neuron-compile-cache/neuronxcc-2.23.6484.0+3b612583/MODULE_13517095088804812998+fad94d7c/model.neff
++-------------+-------+
+| attr        | value |
++-------------+-------+
+| op_name     | gemm  |
+| op_provider | torch |
++-------------+-------+
+{'arg_type': 'default', 'dtype': 'float32', 'M': 1024, 'K': 4096, 'N': 4096}
+{
+    "latency(us)": 7251.321,
+    "read_bytes(B)": 83886080,
+    "write_bytes(B)": 16777216,
+    "io_bytes(B)": 100663296,
+    "mem_bw(GB/s)": 13.882,
+    "calc_flops": 34359738368,
+    "calc_flops_power(tflops)": 4.738,
+    "calc_mem_ratio": 341.333,
+    "kernels": []
+}
+
++-------------+-------+
+| attr        | value |
++-------------+-------+
+| op_name     | gemm  |
+| op_provider | torch |
++-------------+-------+
+{'arg_type': 'default', 'dtype': 'float32', 'M': 4096, 'K': 4096, 'N': 4096}
+{
+    "latency(us)": 9009.856,
+    "read_bytes(B)": 134217728,
+    "write_bytes(B)": 67108864,
+    "io_bytes(B)": 201326592,
+    "mem_bw(GB/s)": 22.345,
+    "calc_flops": 137438953472,
+    "calc_flops_power(tflops)": 15.254,
+    "calc_mem_ratio": 682.667,
+    "kernels": []
+}
+
++-------------+-------+
+| attr        | value |
++-------------+-------+
+| op_name     | gemm  |
+| op_provider | torch |
++-------------+-------+
+{'arg_type': 'default', 'dtype': 'float32', 'M': 1024, 'K': 8192, 'N': 8192}
+{
+    "latency(us)": 6502.988,
+    "read_bytes(B)": 301989888,
+    "write_bytes(B)": 33554432,
+    "io_bytes(B)": 335544320,
+    "mem_bw(GB/s)": 51.598,
+    "calc_flops": 137438953472,
+    "calc_flops_power(tflops)": 21.135,
+    "calc_mem_ratio": 409.6,
+    "kernels": []
+}
+
++-------------+-------+
+| attr        | value |
++-------------+-------+
+| op_name     | gemm  |
+| op_provider | torch |
++-------------+-------+
+{'arg_type': 'default', 'dtype': 'float32', 'M': 4096, 'K': 8192, 'N': 8192}
+{
+    "latency(us)": 3044.642,
+    "read_bytes(B)": 402653184,
+    "write_bytes(B)": 134217728,
+    "io_bytes(B)": 536870912,
+    "mem_bw(GB/s)": 176.333,
+    "calc_flops": 549755813888,
+    "calc_flops_power(tflops)": 180.565,
+    "calc_mem_ratio": 1024.0,
+    "kernels": []
+}
+
++-------------+-------+
+| attr        | value |
++-------------+-------+
+| op_name     | gemm  |
+| op_provider | torch |
++-------------+-------+
+{'arg_type': 'default', 'dtype': 'float32', 'M': 1024, 'K': 1024, 'N': 8192}
+{
+    "latency(us)": 3823.186,
+    "read_bytes(B)": 37748736,
+    "write_bytes(B)": 33554432,
+    "io_bytes(B)": 71303168,
+    "mem_bw(GB/s)": 18.65,
+    "calc_flops": 17179869184,
+    "calc_flops_power(tflops)": 4.494,
+    "calc_mem_ratio": 240.941,
+    "kernels": []
+}
+
++-------------+-------+
+| attr        | value |
++-------------+-------+
+| op_name     | gemm  |
+| op_provider | torch |
++-------------+-------+
+{'arg_type': 'default', 'dtype': 'float32', 'M': 4096, 'K': 1024, 'N': 8192}
+{
+    "latency(us)": 5438.107,
+    "read_bytes(B)": 50331648,
+    "write_bytes(B)": 134217728,
+    "io_bytes(B)": 184549376,
+    "mem_bw(GB/s)": 33.936,
+    "calc_flops": 68719476736,
+    "calc_flops_power(tflops)": 12.637,
+    "calc_mem_ratio": 372.364,
+    "kernels": []
+}
+
++-------------+-------+
+| attr        | value |
++-------------+-------+
+| op_name     | gemm  |
+| op_provider | torch |
++-------------+-------+
+{'arg_type': 'default', 'dtype': 'float16', 'M': 1024, 'K': 4096, 'N': 4096}
+{
+    "latency(us)": 4042.246,
+    "read_bytes(B)": 41943040,
+    "write_bytes(B)": 8388608,
+    "io_bytes(B)": 50331648,
+    "mem_bw(GB/s)": 12.451,
+    "calc_flops": 34359738368,
+    "calc_flops_power(tflops)": 8.5,
+    "calc_mem_ratio": 682.667,
+    "kernels": []
+}
+
++-------------+-------+
+| attr        | value |
++-------------+-------+
+| op_name     | gemm  |
+| op_provider | torch |
++-------------+-------+
+{'arg_type': 'default', 'dtype': 'float16', 'M': 4096, 'K': 4096, 'N': 4096}
+{
+    "latency(us)": 9021.082,
+    "read_bytes(B)": 67108864,
+    "write_bytes(B)": 33554432,
+    "io_bytes(B)": 100663296,
+    "mem_bw(GB/s)": 11.159,
+    "calc_flops": 137438953472,
+    "calc_flops_power(tflops)": 15.235,
+    "calc_mem_ratio": 1365.333,
+    "kernels": []
+}
+
++-------------+-------+
+| attr        | value |
++-------------+-------+
+| op_name     | gemm  |
+| op_provider | torch |
++-------------+-------+
+{'arg_type': 'default', 'dtype': 'float16', 'M': 1024, 'K': 8192, 'N': 8192}
+{
+    "latency(us)": 5980.884,
+    "read_bytes(B)": 150994944,
+    "write_bytes(B)": 16777216,
+    "io_bytes(B)": 167772160,
+    "mem_bw(GB/s)": 28.051,
+    "calc_flops": 137438953472,
+    "calc_flops_power(tflops)": 22.98,
+    "calc_mem_ratio": 819.2,
+    "kernels": []
+}
+
++-------------+-------+
+| attr        | value |
++-------------+-------+
+| op_name     | gemm  |
+| op_provider | torch |
++-------------+-------+
+{'arg_type': 'default', 'dtype': 'float16', 'M': 4096, 'K': 8192, 'N': 8192}
+{
+    "latency(us)": 41474.935,
+    "read_bytes(B)": 201326592,
+    "write_bytes(B)": 67108864,
+    "io_bytes(B)": 268435456,
+    "mem_bw(GB/s)": 6.472,
+    "calc_flops": 549755813888,
+    "calc_flops_power(tflops)": 13.255,
+    "calc_mem_ratio": 2048.0,
+    "kernels": {}
+}
+
++-------------+-------+
+| attr        | value |
++-------------+-------+
+| op_name     | gemm  |
+| op_provider | torch |
++-------------+-------+
+{'arg_type': 'default', 'dtype': 'float16', 'M': 1024, 'K': 1024, 'N': 8192}
+{
+    "latency(us)": 3351.844,
+    "read_bytes(B)": 18874368,
+    "write_bytes(B)": 16777216,
+    "io_bytes(B)": 35651584,
+    "mem_bw(GB/s)": 10.636,
+    "calc_flops": 17179869184,
+    "calc_flops_power(tflops)": 5.125,
+    "calc_mem_ratio": 481.882,
+    "kernels": []
+}
+
++-------------+-------+
+| attr        | value |
++-------------+-------+
+| op_name     | gemm  |
+| op_provider | torch |
++-------------+-------+
+{'arg_type': 'default', 'dtype': 'float16', 'M': 4096, 'K': 1024, 'N': 8192}
+{
+    "latency(us)": 5837.433,
+    "read_bytes(B)": 25165824,
+    "write_bytes(B)": 67108864,
+    "io_bytes(B)": 92274688,
+    "mem_bw(GB/s)": 15.807,
+    "calc_flops": 68719476736,
+    "calc_flops_power(tflops)": 11.772,
+    "calc_mem_ratio": 744.727,
+    "kernels": []
+}
+
++-------------+-------+
+| attr        | value |
++-------------+-------+
+| op_name     | gemm  |
+| op_provider | torch |
++-------------+-------+
+{'arg_type': 'default', 'dtype': 'bfloat16', 'M': 1024, 'K': 4096, 'N': 4096}
+{
+    "latency(us)": 4035.897,
+    "read_bytes(B)": 41943040,
+    "write_bytes(B)": 8388608,
+    "io_bytes(B)": 50331648,
+    "mem_bw(GB/s)": 12.471,
+    "calc_flops": 34359738368,
+    "calc_flops_power(tflops)": 8.514,
+    "calc_mem_ratio": 682.667,
+    "kernels": []
+}
+
++-------------+-------+
+| attr        | value |
++-------------+-------+
+| op_name     | gemm  |
+| op_provider | torch |
++-------------+-------+
+{'arg_type': 'default', 'dtype': 'bfloat16', 'M': 4096, 'K': 4096, 'N': 4096}
+{
+    "latency(us)": 7692.476,
+    "read_bytes(B)": 67108864,
+    "write_bytes(B)": 33554432,
+    "io_bytes(B)": 100663296,
+    "mem_bw(GB/s)": 13.086,
+    "calc_flops": 137438953472,
+    "calc_flops_power(tflops)": 17.867,
+    "calc_mem_ratio": 1365.333,
+    "kernels": []
+}
+
++-------------+-------+
+| attr        | value |
++-------------+-------+
+| op_name     | gemm  |
+| op_provider | torch |
++-------------+-------+
+{'arg_type': 'default', 'dtype': 'bfloat16', 'M': 1024, 'K': 8192, 'N': 8192}
+{
+    "latency(us)": 6129.105,
+    "read_bytes(B)": 150994944,
+    "write_bytes(B)": 16777216,
+    "io_bytes(B)": 167772160,
+    "mem_bw(GB/s)": 27.373,
+    "calc_flops": 137438953472,
+    "calc_flops_power(tflops)": 22.424,
+    "calc_mem_ratio": 819.2,
+    "kernels": []
+}
+
++-------------+-------+
+| attr        | value |
++-------------+-------+
+| op_name     | gemm  |
+| op_provider | torch |
++-------------+-------+
+{'arg_type': 'default', 'dtype': 'bfloat16', 'M': 4096, 'K': 8192, 'N': 8192}
+{
+    "latency(us)": 41254.331,
+    "read_bytes(B)": 201326592,
+    "write_bytes(B)": 67108864,
+    "io_bytes(B)": 268435456,
+    "mem_bw(GB/s)": 6.507,
+    "calc_flops": 549755813888,
+    "calc_flops_power(tflops)": 13.326,
+    "calc_mem_ratio": 2048.0,
+    "kernels": {}
+}
+
++-------------+-------+
+| attr        | value |
++-------------+-------+
+| op_name     | gemm  |
+| op_provider | torch |
++-------------+-------+
+{'arg_type': 'default', 'dtype': 'bfloat16', 'M': 1024, 'K': 1024, 'N': 8192}
++-------------+-------+
+| key         | value |
++-------------+-------+
+| op_name     | gemm  |
+| op_provider | torch |
+| rank        | 0     |
+| device_id   | 0     |
+| idx         | 17    |
++-------------+-------+
+{"arg_type": "default", "dtype": "bfloat16", "M": 4096, "K": 1024, "N": 8192}
+{
+    "latency(us)": 5763.775,
+    "read_bytes(B)": 25165824,
+    "write_bytes(B)": 67108864,
+    "io_bytes(B)": 92274688,
+    "mem_bw(GB/s)": 16.009,
+    "calc_flops": 68719476736,
+    "calc_flops_power(tflops)": 11.923,
+    "calc_mem_ratio": 744.727,
+    "kernels": []
+}
+
+{
+    "latency(us)": 3282.444,
+    "read_bytes(B)": 18874368,
+    "write_bytes(B)": 16777216,
+    "io_bytes(B)": 35651584,
+    "mem_bw(GB/s)": 10.861,
+    "calc_flops": 17179869184,
+    "calc_flops_power(tflops)": 5.234,
+    "calc_mem_ratio": 481.882,
+    "kernels": []
+}
+
++-------------+-------+
+| attr        | value |
++-------------+-------+
+| op_name     | gemm  |
+| op_provider | torch |
++-------------+-------+
+{'arg_type': 'default', 'dtype': 'bfloat16', 'M': 4096, 'K': 1024, 'N': 8192}
+{
+    "latency(us)": 5763.775,
+    "read_bytes(B)": 25165824,
+    "write_bytes(B)": 67108864,
+    "io_bytes(B)": 92274688,
+    "mem_bw(GB/s)": 16.009,
+    "calc_flops": 68719476736,
+    "calc_flops_power(tflops)": 11.923,
+    "calc_mem_ratio": 744.727,
+    "kernels": []
+}
+
+PASS  (20s)
+
+------------------------------------------------------------
+[2/35] workloads/basic/vector_activation_ops/neuron/gelu.json
+Start: 08:40:02
+2026-03-09 08:40:03.272 launch.py:106 [INFO]: Using backend NEURON
+2026-03-09 08:40:03.375 backend.py:239 [WARNING]: load op all_reduce_h2d failed, error: No module named 'backends.NEURON.ops.all_reduce_h2d'
+2026-03-09 08:40:03.407 backend.py:239 [WARNING]: load op sort failed, error: No module named 'backends.NEURON.ops.sort'
+2026-03-09 08:40:03.441 backend.py:239 [WARNING]: load op quant_group_gemm_reduce_sum failed, error: No module named 'backends.NEURON.ops.quant_group_gemm_reduce_sum'
+2026-03-09 08:40:03.443 backend.py:239 [WARNING]: load op moe_quant_group_gemm_combine failed, error: No module named 'backends.NEURON.ops.moe_quant_group_gemm_combine'
+2026-03-09 08:40:06.200 launch.py:154 [INFO]: Backend NEURON instance created.
+2026-03-09 08:40:06.211 launch.py:156 [INFO]: common info: 
++-----------------+-------------+
+| attr            | value       |
++-----------------+-------------+
+| cpu_arch        | x86_64      |
+| python_version  | 3.12.3      |
+| numa_config_str | {0: '0-11'} |
++-----------------+-------------+
+2026-03-09 08:40:06.211 launch.py:157 [INFO]: backend info: 
++-----------------------+---------------------------+
+| attr                  | value                     |
++-----------------------+---------------------------+
+| device_name           | trn2.3xlarge              |
+| device_count          | 4                         |
+| device_memory_mb      | 24576.0                   |
+| neuron_device_count   | 1                         |
+| neuron_core_count     | 4                         |
+| torch_version         | 2.9.0+cu128               |
+| torch_xla_version     | 2.9.0                     |
+| neuronx_cc_version    | 2.23.6484.0+3b612583      |
+| torch_neuronx_version | 2.9.0.2.12.22436+0f1dac25 |
++-----------------------+---------------------------+
+2026-03-09 08:40:06.211 launch.py:158 [INFO]: provider info: 
++----------+---------+
+| provider | version |
++----------+---------+
++----------+---------+
+2026-03-09 08:40:06.211 launch.py:159 [INFO]: env info: 
++---------------------+-----------+-------------+-----------+
+| env                 | is_preset | default_val | final_val |
++---------------------+-----------+-------------+-----------+
+| NEURON_RT_LOG_LEVEL | False     | ERROR       | ERROR     |
++---------------------+-----------+-------------+-----------+
+2026-03-09 08:40:06.211 launch.py:170 [INFO]: use 1 numa nodes, numa_order: [0], mapping to [0, 1, 2, 3]
+2026-03-09 08:40:06.211 launch.py:177 [INFO]: node_world_size: 1, node_rank: 0, all_numa_num: 1
+2026-03-09 08:40:06.211 launch.py:193 [INFO]: using devices: [0]
+2026-03-09 08:40:06.211 launch.py:208 [INFO]: serving config: 
++-------------+-----------+------------------------------------------------------------------+
+| attr        | value     | note                                                             |
++-------------+-----------+------------------------------------------------------------------+
+| master_addr | localhost | ip address for serving and dist communication for gloo and xccl. |
+| server_port | 49371     | port for serving requests.                                       |
+| host_port   | 49372     | port for host communication.                                     |
+| device_port | 49373     | port for device communication.                                   |
++-------------+-----------+------------------------------------------------------------------+
+****************************************************************************************************
+2026-03-09 08:40:06.211 launch.py:244 [INFO]: test cases: 
+2026-03-09 08:40:06.211 launch.py:246 [INFO]: gelu has 15 test cases
+****************************************************************************************************
+2026-03-09 08:40:06.213 engine.py:164 [INFO]: spawn compute infer loop success, pids: [12385]
+2026-03-09 08:40:10.016 engine.py:177 [INFO]: all subprocesses are ready
+2026-03-09 08:40:10.017 perf_engine.py:152 [INFO]: dispatch 1 ops, 15 cases to ComputeEngine
+2026-Mar-09 08:40:13.0623 12385:12423 [0] int nccl_net_ofi_create_plugin(nccl_net_ofi_plugin_t**):219 CCOM WARN NET/OFI Failed to initialize rdma protocol
+2026-Mar-09 08:40:13.0625 12385:12423 [0] int nccl_net_ofi_create_plugin(nccl_net_ofi_plugin_t**):354 CCOM WARN NET/OFI aws-ofi-nccl initialization failed
+2026-Mar-09 08:40:13.0628 12385:12423 [0] ncclResult_t nccl_net_ofi_init_no_atexit_fini_v6(ncclDebugLogger_t):183 CCOM WARN NET/OFI Initializing plugin failed
+2026-Mar-09 08:40:13.0630 12385:12423 [0] net_plugin.cc:97 CCOM WARN OFI plugin initNet() failed is EFA enabled?
+2026-03-09 08:41:16.000939:  12385  [INFO]: Another process must be compiling /var/tmp/neuron-compile-cache/neuronxcc-2.23.6484.0+3b612583/MODULE_6195766727040815622+fad94d7c/model.hlo_module.pb, been waiting for: 1.0 minutes
+2026-03-09 08:42:16.000941:  12385  [INFO]: Another process must be compiling /var/tmp/neuron-compile-cache/neuronxcc-2.23.6484.0+3b612583/MODULE_6195766727040815622+fad94d7c/model.hlo_module.pb, been waiting for: 2.0 minutes
+2026-03-09 08:43:16.000943:  12385  [INFO]: Another process must be compiling /var/tmp/neuron-compile-cache/neuronxcc-2.23.6484.0+3b612583/MODULE_6195766727040815622+fad94d7c/model.hlo_module.pb, been waiting for: 3.0 minutes
+2026-03-09 08:44:16.000945:  12385  [INFO]: Another process must be compiling /var/tmp/neuron-compile-cache/neuronxcc-2.23.6484.0+3b612583/MODULE_6195766727040815622+fad94d7c/model.hlo_module.pb, been waiting for: 4.0 minutes
+/usr/lib/python3.12/multiprocessing/resource_tracker.py:254: UserWarning: resource_tracker: There appear to be 6 leaked semaphore objects to clean up at shutdown
+  warnings.warn('resource_tracker: There appear to be %d '
+TIMEOUT after 300s
+
+------------------------------------------------------------
+[3/35] workloads/basic/vector_activation_ops/neuron/silu.json
+Start: 08:45:02
+2026-03-09 08:45:03.376 launch.py:106 [INFO]: Using backend NEURON
+2026-03-09 08:45:03.478 backend.py:239 [WARNING]: load op all_reduce_h2d failed, error: No module named 'backends.NEURON.ops.all_reduce_h2d'
+2026-03-09 08:45:03.511 backend.py:239 [WARNING]: load op sort failed, error: No module named 'backends.NEURON.ops.sort'
+2026-03-09 08:45:03.545 backend.py:239 [WARNING]: load op quant_group_gemm_reduce_sum failed, error: No module named 'backends.NEURON.ops.quant_group_gemm_reduce_sum'
+2026-03-09 08:45:03.548 backend.py:239 [WARNING]: load op moe_quant_group_gemm_combine failed, error: No module named 'backends.NEURON.ops.moe_quant_group_gemm_combine'
+2026-03-09 08:45:06.324 launch.py:154 [INFO]: Backend NEURON instance created.
+2026-03-09 08:45:06.334 launch.py:156 [INFO]: common info: 
++-----------------+-------------+
+| attr            | value       |
++-----------------+-------------+
+| cpu_arch        | x86_64      |
+| python_version  | 3.12.3      |
+| numa_config_str | {0: '0-11'} |
++-----------------+-------------+
+2026-03-09 08:45:06.334 launch.py:157 [INFO]: backend info: 
++-----------------------+---------------------------+
+| attr                  | value                     |
++-----------------------+---------------------------+
+| device_name           | trn2.3xlarge              |
+| device_count          | 4                         |
+| device_memory_mb      | 24576.0                   |
+| neuron_device_count   | 1                         |
+| neuron_core_count     | 4                         |
+| torch_version         | 2.9.0+cu128               |
+| torch_xla_version     | 2.9.0                     |
+| neuronx_cc_version    | 2.23.6484.0+3b612583      |
+| torch_neuronx_version | 2.9.0.2.12.22436+0f1dac25 |
++-----------------------+---------------------------+
+2026-03-09 08:45:06.334 launch.py:158 [INFO]: provider info: 
++----------+---------+
+| provider | version |
++----------+---------+
++----------+---------+
+2026-03-09 08:45:06.334 launch.py:159 [INFO]: env info: 
++---------------------+-----------+-------------+-----------+
+| env                 | is_preset | default_val | final_val |
++---------------------+-----------+-------------+-----------+
+| NEURON_RT_LOG_LEVEL | False     | ERROR       | ERROR     |
++---------------------+-----------+-------------+-----------+
+2026-03-09 08:45:06.334 launch.py:170 [INFO]: use 1 numa nodes, numa_order: [0], mapping to [0, 1, 2, 3]
+2026-03-09 08:45:06.334 launch.py:177 [INFO]: node_world_size: 1, node_rank: 0, all_numa_num: 1
+2026-03-09 08:45:06.334 launch.py:193 [INFO]: using devices: [0]
+2026-03-09 08:45:06.334 launch.py:208 [INFO]: serving config: 
++-------------+-----------+------------------------------------------------------------------+
+| attr        | value     | note                                                             |
++-------------+-----------+------------------------------------------------------------------+
+| master_addr | localhost | ip address for serving and dist communication for gloo and xccl. |
+| server_port | 49371     | port for serving requests.                                       |
+| host_port   | 49372     | port for host communication.                                     |
+| device_port | 49373     | port for device communication.                                   |
++-------------+-----------+------------------------------------------------------------------+
+****************************************************************************************************
+2026-03-09 08:45:06.334 launch.py:244 [INFO]: test cases: 
+2026-03-09 08:45:06.335 launch.py:246 [INFO]: silu has 15 test cases
+****************************************************************************************************
+2026-03-09 08:45:06.337 engine.py:164 [INFO]: spawn compute infer loop success, pids: [12578]
+2026-03-09 08:45:10.144 engine.py:177 [INFO]: all subprocesses are ready
+2026-03-09 08:45:10.144 perf_engine.py:152 [INFO]: dispatch 1 ops, 15 cases to ComputeEngine
+2026-Mar-09 08:45:13.0647 12578:12616 [0] int nccl_net_ofi_create_plugin(nccl_net_ofi_plugin_t**):219 CCOM WARN NET/OFI Failed to initialize rdma protocol
+2026-Mar-09 08:45:13.0650 12578:12616 [0] int nccl_net_ofi_create_plugin(nccl_net_ofi_plugin_t**):354 CCOM WARN NET/OFI aws-ofi-nccl initialization failed
+2026-Mar-09 08:45:13.0653 12578:12616 [0] ncclResult_t nccl_net_ofi_init_no_atexit_fini_v6(ncclDebugLogger_t):183 CCOM WARN NET/OFI Initializing plugin failed
+2026-Mar-09 08:45:13.0655 12578:12616 [0] net_plugin.cc:97 CCOM WARN OFI plugin initNet() failed is EFA enabled?
+2026-03-09 08:46:16.000957:  12578  [INFO]: Another process must be compiling /var/tmp/neuron-compile-cache/neuronxcc-2.23.6484.0+3b612583/MODULE_6195766727040815622+fad94d7c/model.hlo_module.pb, been waiting for: 1.0 minutes
+2026-03-09 08:47:16.000959:  12578  [INFO]: Another process must be compiling /var/tmp/neuron-compile-cache/neuronxcc-2.23.6484.0+3b612583/MODULE_6195766727040815622+fad94d7c/model.hlo_module.pb, been waiting for: 2.0 minutes
+......./usr/lib/python3.12/multiprocessing/resource_tracker.py:254: UserWarning: resource_tracker: There appear to be 6 leaked semaphore objects to clean up at shutdown
+  warnings.warn('resource_tracker: There appear to be %d '
+TIMEOUT after 300s
+
+------------------------------------------------------------
+[4/35] workloads/basic/vector_index_ops/neuron/embedding.json
+Start: 08:50:02
+2026-03-09 08:50:03.554 launch.py:106 [INFO]: Using backend NEURON
+2026-03-09 08:50:03.656 backend.py:239 [WARNING]: load op all_reduce_h2d failed, error: No module named 'backends.NEURON.ops.all_reduce_h2d'
+2026-03-09 08:50:03.689 backend.py:239 [WARNING]: load op sort failed, error: No module named 'backends.NEURON.ops.sort'
+2026-03-09 08:50:03.722 backend.py:239 [WARNING]: load op quant_group_gemm_reduce_sum failed, error: No module named 'backends.NEURON.ops.quant_group_gemm_reduce_sum'
+2026-03-09 08:50:03.725 backend.py:239 [WARNING]: load op moe_quant_group_gemm_combine failed, error: No module named 'backends.NEURON.ops.moe_quant_group_gemm_combine'
+2026-03-09 08:50:06.513 launch.py:154 [INFO]: Backend NEURON instance created.
+2026-03-09 08:50:06.523 launch.py:156 [INFO]: common info: 
++-----------------+-------------+
+| attr            | value       |
++-----------------+-------------+
+| cpu_arch        | x86_64      |
+| python_version  | 3.12.3      |
+| numa_config_str | {0: '0-11'} |
++-----------------+-------------+
+2026-03-09 08:50:06.523 launch.py:157 [INFO]: backend info: 
++-----------------------+---------------------------+
+| attr                  | value                     |
++-----------------------+---------------------------+
+| device_name           | trn2.3xlarge              |
+| device_count          | 4                         |
+| device_memory_mb      | 24576.0                   |
+| neuron_device_count   | 1                         |
+| neuron_core_count     | 4                         |
+| torch_version         | 2.9.0+cu128               |
+| torch_xla_version     | 2.9.0                     |
+| neuronx_cc_version    | 2.23.6484.0+3b612583      |
+| torch_neuronx_version | 2.9.0.2.12.22436+0f1dac25 |
++-----------------------+---------------------------+
+2026-03-09 08:50:06.523 launch.py:158 [INFO]: provider info: 
++----------+---------+
+| provider | version |
++----------+---------+
++----------+---------+
+2026-03-09 08:50:06.523 launch.py:159 [INFO]: env info: 
++---------------------+-----------+-------------+-----------+
+| env                 | is_preset | default_val | final_val |
++---------------------+-----------+-------------+-----------+
+| NEURON_RT_LOG_LEVEL | False     | ERROR       | ERROR     |
++---------------------+-----------+-------------+-----------+
+2026-03-09 08:50:06.523 launch.py:170 [INFO]: use 1 numa nodes, numa_order: [0], mapping to [0, 1, 2, 3]
+2026-03-09 08:50:06.523 launch.py:177 [INFO]: node_world_size: 1, node_rank: 0, all_numa_num: 1
+2026-03-09 08:50:06.523 launch.py:193 [INFO]: using devices: [0]
+2026-03-09 08:50:06.524 launch.py:208 [INFO]: serving config: 
++-------------+-----------+------------------------------------------------------------------+
+| attr        | value     | note                                                             |
++-------------+-----------+------------------------------------------------------------------+
+| master_addr | localhost | ip address for serving and dist communication for gloo and xccl. |
+| server_port | 49371     | port for serving requests.                                       |
+| host_port   | 49372     | port for host communication.                                     |
+| device_port | 49373     | port for device communication.                                   |
++-------------+-----------+------------------------------------------------------------------+
+****************************************************************************************************
+2026-03-09 08:50:06.524 launch.py:244 [INFO]: test cases: 
+2026-03-09 08:50:06.524 launch.py:246 [INFO]: embedding has 8 test cases
+****************************************************************************************************
+2026-03-09 08:50:06.526 engine.py:164 [INFO]: spawn compute infer loop success, pids: [13119]
+2026-03-09 08:50:10.352 engine.py:177 [INFO]: all subprocesses are ready
+2026-03-09 08:50:10.352 perf_engine.py:152 [INFO]: dispatch 1 ops, 8 cases to ComputeEngine
+2026-Mar-09 08:50:14.0168 13119:13157 [0] int nccl_net_ofi_create_plugin(nccl_net_ofi_plugin_t**):219 CCOM WARN NET/OFI Failed to initialize rdma protocol
+2026-Mar-09 08:50:14.0171 13119:13157 [0] int nccl_net_ofi_create_plugin(nccl_net_ofi_plugin_t**):354 CCOM WARN NET/OFI aws-ofi-nccl initialization failed
+2026-Mar-09 08:50:14.0173 13119:13157 [0] ncclResult_t nccl_net_ofi_init_no_atexit_fini_v6(ncclDebugLogger_t):183 CCOM WARN NET/OFI Initializing plugin failed
+2026-Mar-09 08:50:14.0176 13119:13157 [0] net_plugin.cc:97 CCOM WARN OFI plugin initNet() failed is EFA enabled?
+............../usr/lib/python3.12/multiprocessing/resource_tracker.py:254: UserWarning: resource_tracker: There appear to be 6 leaked semaphore objects to clean up at shutdown
+  warnings.warn('resource_tracker: There appear to be %d '

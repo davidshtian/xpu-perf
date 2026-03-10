@@ -8,34 +8,17 @@
             ],
             "src_batch_size.dst_batch_size": [
                 [
-                    1024,
-                    1024
+                    256,
+                    256
+                ],
+                [
+                    512,
+                    512
                 ]
             ],
             "dim_size": [
                 256,
-                512,
-                1024
-            ]
-        },
-        {
-            "arg_type": "default",
-            "dtype": [
-                "float32",
-                "bfloat16"
-            ],
-            "src_batch_size.dst_batch_size": [
-                [
-                    512,
-                    512
-                ],
-                [
-                    1024,
-                    1024
-                ]
-            ],
-            "dim_size": [
-                1024
+                512
             ]
         }
     ]

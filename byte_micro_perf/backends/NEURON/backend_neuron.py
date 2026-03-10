@@ -443,9 +443,22 @@ class BackendNEURON(Backend):
                         math.floor(max(assume_avail_bytes, assume_cache_size) / tensor_size),
                         math.floor(assume_cache_size / tensor_size)
                     )
+            # Cap to avoid a huge clone-chain HLO during tensor materialization.
+            # 256 clones create a >10MB HLO that takes >5 min to compile.
+            # 4 copies are enough for Neuron (no CPU L3 cache to flush).
+            max_data_cnt = min(max_data_cnt, 4)
 
             tensor_list = op_instance.create_tensors(max_data_cnt)
             random.shuffle(tensor_list)
+
+            # Materialize all XLA tensors to clear lazy computation history.
+            # clone() inside create_tensors builds a different HLO graph for
+            # each clone (empty→clone→matmul vs empty→matmul), causing new
+            # compilations on every 4th warmup iteration and occasional
+            # neuronx-cc "type must be number, but is null" failures.
+            # Flushing here ensures all subsequent iterations share one graph.
+            xm.mark_step()
+            xm.wait_device_ops()
 
             latency_us, _ = self.core_perf(op_instance, 2, 2, tensor_list, profiling=False)
             prefer_iters = min(max(int(max_test_time / latency_us), 2), min_test_iters)
@@ -496,7 +509,7 @@ class BackendNEURON(Backend):
         start_time = time.perf_counter_ns()
         for i in range(prefer_iterations):
             op_instance.core_run(tensor_list[i % len(tensor_list)])
-        xm.mark_step()
+            xm.mark_step()  # reuse the 1-op HLO compiled during warmup
         xm.wait_device_ops()
         end_time = time.perf_counter_ns()
 

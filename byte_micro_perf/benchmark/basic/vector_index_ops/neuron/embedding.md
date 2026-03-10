@@ -1,20 +1,20 @@
 # Embedding Performance Benchmark - NEURON Backend
 
-**Test Date:** 2026-03-04
+**Test Date:** 2026-03-09
 **Backend:** NEURON
-**Device:** Device 10
-**Device Type:** trn2.48xlarge
-**Test Command:** `python launch.py --backend NEURON --device 10 --workload workloads/basic/vector_index_ops/neuron/embedding.json`
+**Device:** Device 0
+**Device Type:** trn2.3xlarge
+**Test Command:** `python launch.py --backend NEURON --device 0 --workload workloads/basic/vector_index_ops/neuron/embedding.json`
 
 ## System Information
 
 | Attribute | Value |
 |-----------|-------|
-| Device Name | trn2.48xlarge |
-| Device Count | 64 |
+| Device Name | trn2.3xlarge |
+| Device Count | 4 |
 | Device Memory | 24576.0 MB |
-| Neuron Device Count | 16 |
-| Neuron Core Count | 64 |
+| Neuron Device Count | 1 |
+| Neuron Core Count | 4 |
 | Torch Version | 2.9.0+cu128 |
 | Torch XLA Version | 2.9.0 |
 | NeuronX CC Version | 2.23.6484.0+3b612583 |
@@ -22,42 +22,40 @@
 
 ## Performance Results
 
-| Op        | Dtype    | Src Batch | Dst Batch | Dim Size | Latency(μs) | Mem BW(GB/s) |
-|-----------|----------|-----------|-----------|----------|-------------|--------------|
-| embedding | float32  | 1024      | 1024      | 128      | 95.22       | 11.098       |
-| embedding | float32  | 1024      | 1024      | 256      | 51.84       | 40.611       |
-| embedding | float32  | 1024      | 1024      | 512      | 29.41       | 142.892      |
-| embedding | float32  | 1024      | 1024      | 1024     | 19.85       | 423.102      |
-| embedding | bfloat16 | 1024      | 1024      | 128      | 350.43      | 1.519        |
-| embedding | bfloat16 | 1024      | 1024      | 256      | 149.66      | 7.061        |
-| embedding | bfloat16 | 1024      | 1024      | 512      | 70.77       | 29.750       |
-| embedding | bfloat16 | 1024      | 1024      | 1024     | 35.29       | 119.080      |
+| Op   | Dtype    | Shape | Latency(μs) | Mem BW(GB/s) |
+|------|----------|-------|-------------|--------------|
+| embedding | float32  | src=1024×128 dst=1024×128      |          17.439 |       60.597 |
+| embedding | float32  | src=1024×256 dst=1024×256      |          20.384 |      103.287 |
+| embedding | float32  | src=1024×512 dst=1024×512      |          17.970 |      233.864 |
+| embedding | float32  | src=1024×1024 dst=1024×1024    |          18.132 |      463.085 |
+| embedding | bfloat16 | src=1024×128 dst=1024×128      |          17.517 |       30.397 |
+| embedding | bfloat16 | src=1024×256 dst=1024×256      |          21.435 |       49.300 |
+| embedding | bfloat16 | src=1024×512 dst=1024×512      |          17.815 |      118.178 |
+| embedding | bfloat16 | src=1024×1024 dst=1024×1024    |          21.513 |      195.350 |
 
 ## Performance Analysis
 
-### Key Findings
+### Latency Summary
 
-**Best Performance:**
-- **Float32 @ dim_size=1024**: Latency 19.85 μs, Memory BW 423.10 GB/s (highest bandwidth)
-- **Float32 @ dim_size=512**: Latency 29.41 μs, Memory BW 142.89 GB/s
+| Metric | Value | Configuration |
+|--------|-------|---------------|
+| Best latency | 17.439 μs | dtype=float32 shape=src=1024×128 dst=1024×128 |
+| Worst latency | 21.513 μs | dtype=bfloat16 shape=src=1024×1024 dst=1024×1024 |
 
-**Performance by Data Type:**
-- **Float32**: Consistently lower latency (19.85-95.22 μs) and higher memory bandwidth
-- **BFloat16**: Higher latency (35.29-350.43 μs) but still achieves good bandwidth at larger dim sizes
+### Performance by Data Type
 
-**Performance by Dimension Size:**
-- **Larger dim_size = Better Performance**: Memory bandwidth increases significantly with dimension size
-- **dim_size=1024**: 423.10 GB/s (float32) vs 119.08 GB/s (bfloat16)
-- **dim_size=128**: 11.10 GB/s (float32) vs 1.52 GB/s (bfloat16)
+| Dtype | Min Latency(μs) | Max Latency(μs) | Avg Latency(μs) |
+|-------|-----------------|-----------------|-----------------|
+| bfloat16 | 17.517 | 21.513 | 19.570 |
+| float32 | 17.439 | 20.384 | 18.481 |
 
-### Trends
+### Memory Bandwidth
 
-1. **Dimension Size Impact**: Performance improves dramatically as dimension size increases from 128 to 1024
-2. **Float32 Advantage**: Float32 provides 2-4x better performance than bfloat16 across all configurations
-3. **Memory Bandwidth**: Scales well with dimension size, reaching peak of 423 GB/s
+- **Peak**: 463.085 GB/s — dtype=float32 shape=src=1024×1024 dst=1024×1024
+- **Average**: 156.757 GB/s
+- **Min**: 30.397 GB/s
 
-### Recommendations
+## Notes
 
-1. **For Maximum Performance**: Use float32 with dim_size ≥ 512
-2. **For Large Embeddings**: dim_size=1024 provides optimal memory bandwidth utilization
-3. **Trade-off Consideration**: If memory is limited, bfloat16 at dim_size=1024 still provides 119 GB/s bandwidth
+- Tested on trn2.3xlarge (1 Neuron device, 4 NeuronCores, 24576 MB HBM)
+- All results use torch-neuronx 2.9.0.2.12.22436+0f1dac25
