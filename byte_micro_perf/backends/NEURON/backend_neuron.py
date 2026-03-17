@@ -331,20 +331,37 @@ class BackendNEURON(Backend):
                     output_queue.put((case_idx, result_dict))
                 continue
 
+            # FIX: Skip cases where task_world_size != world_size to avoid deadlock
+            # XLA backend doesn't support proper sub-group communication
+            # All ranks must participate in all collective operations
+            if task_world_size != world_size:
+                if rank == 0:
+                    logger = __import__('logging').getLogger(__name__)
+                    logger.warning(
+                        f"Skipping case with world_size={task_world_size} "
+                        f"(current world_size={world_size}). "
+                        f"XLA backend requires task_world_size == world_size."
+                    )
+                    output_queue.put((case_idx, result_dict))
+                continue
+
             if task_world_size > 1 and task_world_size not in dist_group_mapping:
                 dist_group_mapping[task_world_size] = dist.new_group(ranks=list(range(task_world_size)))
 
             op_instance = None
-            if rank < task_world_size:
-                try:
-                    op_instance = op_cls(
-                        task_case, self,
-                        op_group=dist_group_mapping.get(task_world_size, None),
-                        group_size=task_world_size
-                    )
-                    op_instance.is_concurrent = True
-                except Exception as e:
-                    traceback.print_exc()
+            # FIX: All ranks must create op_instance to avoid deadlock
+            # Even if rank >= task_world_size, they need to participate in gather operations
+            try:
+                op_instance = op_cls(
+                    task_case, self,
+                    op_group=dist_group_mapping.get(task_world_size, None),
+                    group_size=task_world_size
+                )
+                op_instance.is_concurrent = True
+                # Mark whether this rank actually participates in the test
+                op_instance.is_active_rank = (rank < task_world_size)
+            except Exception as e:
+                traceback.print_exc()
 
             # Check all ranks created op successfully
             if world_size > 1:
@@ -362,11 +379,16 @@ class BackendNEURON(Backend):
                 continue
 
             target_dict = {}
-            if rank < task_world_size:
+            # FIX: All ranks must execute perf() to avoid deadlock in XLA all_gather
+            # Even ranks not participating in the test must call perf() because
+            # _gather_objects inside perf() uses xm.all_gather which requires all ranks
+            if op_instance is not None:
                 try:
                     target_dict = self.perf(op_instance, profiling=True)
                 except Exception as e:
                     traceback.print_exc()
+            # Only ranks < task_world_size will have valid results
+            # Others will have empty target_dict, which is fine
 
             # Gather results from all ranks
             if world_size > 1:
@@ -464,11 +486,27 @@ class BackendNEURON(Backend):
             prefer_iters = min(max(int(max_test_time / latency_us), 2), min_test_iters)
             if op_instance.group_size > 1:
                 # Replace all_gather_object with XLA-compatible gather
+                # FIX: Use global world_size to avoid deadlock when task_world_size < world_size
+                # All ranks must participate in XLA all_gather, even if not in the active group
+                current_rank = dist.get_rank()
+                global_world_size = dist.get_world_size()
+
+                # Prepare data: active ranks send real data, others send dummy data
+                if current_rank < op_instance.group_size:
+                    local_data = {"rank": current_rank, "prefer_iters": prefer_iters}
+                else:
+                    local_data = {"rank": current_rank, "prefer_iters": 0}
+
+                # Gather from all ranks (required by XLA)
                 gathered = self._gather_objects(
-                    {"rank": dist.get_rank(), "prefer_iters": prefer_iters},
-                    dist.get_rank(), op_instance.group_size
+                    local_data,
+                    current_rank,
+                    global_world_size  # Use global world_size, not group_size
                 )
-                prefer_iters = max(x["prefer_iters"] for x in gathered)
+                # Only use data from active ranks
+                active_gathered = [g for g in gathered[:op_instance.group_size] if g["prefer_iters"] > 0]
+                if active_gathered:
+                    prefer_iters = max(x["prefer_iters"] for x in active_gathered)
             time.sleep(sleep_time)
             latency_us, kernel_mapping = self.core_perf(op_instance, 2, prefer_iters, tensor_list, profiling=profiling)
 
@@ -492,15 +530,27 @@ class BackendNEURON(Backend):
         op_group = op_instance.op_group
         group_size = op_instance.group_size
 
-        self.op_group_barrier(op_group=op_group, group_size=group_size)
+        # FIX: Check if this rank is active in the test
+        # Inactive ranks (rank >= task_world_size) should not execute the actual op
+        is_active = getattr(op_instance, 'is_active_rank', True)
+
+        # FIX: Use global barrier for all ranks to avoid deadlock
+        # op_group may not include inactive ranks, causing them to hang
+        if dist.is_initialized():
+            self.op_group_barrier(op_group=None, group_size=dist.get_world_size())
         self.device_synchronize()
 
         # Warmup -- extra iterations to absorb XLA compilation
         effective_warmup = max(warmup_iterations, 4)
         try:
-            for i in range(effective_warmup):
-                op_instance.core_run(tensor_list[i % len(tensor_list)])
-                xm.mark_step()
+            if is_active:
+                for i in range(effective_warmup):
+                    op_instance.core_run(tensor_list[i % len(tensor_list)])
+                    xm.mark_step()
+            else:
+                # Inactive ranks just wait, syncing with active ranks
+                for i in range(effective_warmup):
+                    xm.mark_step()
             xm.wait_device_ops()
         except Exception:
             # Clear any pending lazy ops so that peer ranks participating in
@@ -512,14 +562,21 @@ class BackendNEURON(Backend):
             raise
 
         # Timed iterations
-        self.op_group_barrier(op_group=op_group, group_size=group_size)
+        # FIX: Use global barrier for all ranks
+        if dist.is_initialized():
+            self.op_group_barrier(op_group=None, group_size=dist.get_world_size())
         xm.wait_device_ops()
 
         start_time = time.perf_counter_ns()
         try:
-            for i in range(prefer_iterations):
-                op_instance.core_run(tensor_list[i % len(tensor_list)])
-                xm.mark_step()  # reuse the 1-op HLO compiled during warmup
+            if is_active:
+                for i in range(prefer_iterations):
+                    op_instance.core_run(tensor_list[i % len(tensor_list)])
+                    xm.mark_step()  # reuse the 1-op HLO compiled during warmup
+            else:
+                # Inactive ranks just sync, ensuring all marks are balanced
+                for i in range(prefer_iterations):
+                    xm.mark_step()
             xm.wait_device_ops()
         except Exception:
             try:
