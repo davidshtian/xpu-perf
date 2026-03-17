@@ -255,7 +255,7 @@ class XCCLEngine(BaseEngine):
             logger.info(f"spawn xccl infer loop success, pids: {self.subprocess_pids}")
 
             try:
-                signal = self.output_queue.get(timeout=60)
+                signal = self.output_queue.get(timeout=600)
                 if signal != "success":
                     logger.error(f"xccl infer loop failed, signal: {signal}")
                     sys.exit(-1)

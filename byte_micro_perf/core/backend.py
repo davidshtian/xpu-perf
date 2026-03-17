@@ -306,11 +306,15 @@ class Backend(ABC):
     def initialize_ccl(self, rank: int, world_size: int):
         dist_module = self.get_dist_module()
         dist_backend_name = self.get_dist_backend()
-        
+
+        # 错开不同rank的初始化时间，避免64个进程同时连接根节点
+        if rank > 0:
+            time.sleep(rank * 1.0)  # 每个rank延迟1秒
+
         dist_module.init_process_group(
             backend=dist_backend_name,
             world_size=world_size,
-            rank=rank, 
+            rank=rank,
             timeout=timedelta(seconds=1800)
         )
 

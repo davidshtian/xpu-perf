@@ -1,1 +1,1 @@
-***** Framework Post SPMD Transformation took: 36.0μs *****
+***** Framework Post SPMD Transformation took: 13.0μs *****
