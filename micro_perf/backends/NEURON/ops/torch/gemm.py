@@ -22,4 +22,5 @@ class NeuronGemmOp(GemmOp):
                 "Neuron does not support tfloat32 (NVIDIA-specific)"
             )
 
+
 OP_MAPPING["torch"] = NeuronGemmOp
