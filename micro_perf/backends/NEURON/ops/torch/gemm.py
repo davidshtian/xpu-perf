@@ -8,21 +8,18 @@ sys.path.insert(
 
 from core.ops.tensor_gemm_ops import GemmOp
 
+OP_MAPPING = {}
 
 class NeuronGemmOp(GemmOp):
     def __init__(self, args_dict, backend, *args, **kwargs):
-        dtype = args_dict.get("dtype", "")
-        if dtype == "tfloat32":
+        super().__init__(args_dict, backend, *args, **kwargs)
+
+    def vendor_parser(self):
+        super().vendor_parser()
+
+        if self.dtype in ["tfloat32"]:
             raise NotImplementedError(
                 "Neuron does not support tfloat32 (NVIDIA-specific)"
             )
-        if dtype == "int8":
-            raise NotImplementedError(
-                "Neuron does not support int8 gemm via torch.matmul"
-            )
-        super().__init__(args_dict, backend, *args, **kwargs)
 
-
-OP_MAPPING = {
-    "torch": NeuronGemmOp
-}
+OP_MAPPING["torch"] = NeuronGemmOp
